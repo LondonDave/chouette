@@ -46,7 +46,6 @@ body {
  12 11 10  9  8  7       6  5  4  3  2  1     
 </pre>
 
-<script src="scripts/jquery.js"></script>
 <script>
 
 var game = {};
@@ -158,14 +157,10 @@ function render(game,view){
   var board = game.board.slice();
   if (view == 'box') {
     board = board.reverse();
-    // namebottom = '○: ' + game.player[0] + ' (Box)';
-    // nametop = '●: ' + game.player[1] + ' (Captain)';
     namebottom = '○: Box';
     nametop = '●: Captain'; 
   }
   else {
-    // nametop = '○: ' + game.player[0] + ' (Box)';
-    // namebottom = '●: ' + game.player[1] + ' (Captain)';
     nametop = '○: Box';
     namebottom = '●: Captain'; 
   }
@@ -228,23 +223,29 @@ function clickPos(event) {
 
   if (pos < 0 ) {
     if (game.dice == null){
-      $.post("/roll", {view: view}, function () { });
+      const data = {view: view};
+      fetch('/roll', {method: 'POST', headers: {'Content-Type': 'application/json',}, body: JSON.stringify(data),});
     }
     else {
       if (event.button == 2){
-        $.post("/reset", {view: view}, function () { });
+        const data = {view: view};
+        fetch('/reset', {method: 'POST', headers: {'Content-Type': 'application/json',}, body: JSON.stringify(data),});
       }
       else {
-        $.post("/pickup", {view: view}, function () { });
+        const data = {view: view};
+        fetch('/pickup', {method: 'POST', headers: {'Content-Type': 'application/json',}, body: JSON.stringify(data),});        
       }
     }
   }
   else if (pos){
+    var move = { view: view, pos: pos, lowDiceFirst: 0};
     if (event.button == 2){
-      $.post("/move", { view: view, pos: pos, lowDiceFirst: 1}, function () {});
+      move.lowDiceFirst = 1;
+      fetch('/move', {method: 'POST', headers: {'Content-Type': 'application/json',}, body: JSON.stringify(move),});
     }
     else {
-      $.post("/move", { view: view, pos: pos, lowDiceFirst: 0}, function () {});
+      move.lowDiceFirst = 0;
+      fetch('/move', {method: 'POST', headers: {'Content-Type': 'application/json',}, body: JSON.stringify(move),});
     }
   }
 

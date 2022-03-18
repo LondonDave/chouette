@@ -17,7 +17,7 @@ app.get('/stream',sse.init)
 
 var server = app.listen(8081, function () {
     var port = server.address().port;
-    console.log("Bot console listening at http://127.0.0.1:%s", port);
+    console.log("Game listening at http://127.0.0.1:%s", port);
 })
 
 sendGame = function(game){
@@ -70,6 +70,10 @@ app.post('/roll',function (req, res) {
         startgame.dice.sort(compare);
         currentgame = JSON.parse(JSON.stringify(startgame));
     }
+
+    console.log(req.body.view + ' roll');
+    console.log(JSON.stringify(currentgame));
+   
     sendGame(currentgame);    
     res.send('OK');
 });
@@ -86,6 +90,9 @@ app.post('/pickup',function (req, res) {
         currentgame = JSON.parse(JSON.stringify(startgame));
     }
 
+    console.log(req.body.view + ' pickup');
+    console.log(JSON.stringify(currentgame));
+
     sendGame(currentgame);
     res.send('OK');
 });
@@ -93,6 +100,10 @@ app.post('/pickup',function (req, res) {
 app.post('/reset',function (req, res) {
     console.log('reset');
     currentgame = JSON.parse(JSON.stringify(startgame));
+
+    console.log(req.body.view + ' reset');
+    console.log(JSON.stringify(currentgame));
+
     sendGame(currentgame);
     res.send('OK');
 });
@@ -107,8 +118,6 @@ app.post('/move',function (req, res) {
         board = currentgame.board.slice();        
     }
 
-    console.log(JSON.stringify(board));
-    console.log(JSON.stringify(currentgame));
     console.log(req.body.view,req.body.pos,req.body.lowDiceFirst);
 
     var pos = parseInt(req.body.pos);
@@ -171,7 +180,7 @@ app.post('/move',function (req, res) {
                 currentgame.board = board;       
             }
     
-            console.log(currentgame);
+            console.log(JSON.stringify(currentgame));
         } 
     }
 

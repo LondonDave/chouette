@@ -5,7 +5,8 @@
   "main": "chouette.js",
   "dependencies": {
     "express": "^4.17.3",
-    "express-sse": "=0.5.1"
+    "express-sse": "=0.5.1",
+    "node": "^17.7.1"
   },
   "devDependencies": {},
   "scripts": {
